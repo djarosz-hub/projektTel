@@ -11,3 +11,16 @@ C:\Users\jaros\source\repos\Lab\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhon
 C:\Users\jaros\source\repos\Lab\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.dll
 C:\Users\jaros\source\repos\Lab\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.pdb
 C:\Users\jaros\source\repos\Lab\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.genruntimeconfig.cache
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\bin\Debug\netcoreapp3.1\MobilePhoneS2.exe
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\bin\Debug\netcoreapp3.1\MobilePhoneS2.deps.json
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\bin\Debug\netcoreapp3.1\MobilePhoneS2.runtimeconfig.json
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\bin\Debug\netcoreapp3.1\MobilePhoneS2.runtimeconfig.dev.json
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\bin\Debug\netcoreapp3.1\MobilePhoneS2.dll
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\bin\Debug\netcoreapp3.1\MobilePhoneS2.pdb
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.csprojAssemblyReference.cache
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.csproj.CoreCompileInputs.cache
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.AssemblyInfoInputs.cache
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.AssemblyInfo.cs
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.dll
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.pdb
+C:\Users\jaros\Desktop\projektTel\MobilePhoneS2\obj\Debug\netcoreapp3.1\MobilePhoneS2.genruntimeconfig.cache

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace MobilePhoneS2
 {
-    // immutable
+    //immutable
     public class Contact
     {
         public string Name { get; private set; }
