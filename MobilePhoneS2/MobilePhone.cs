@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace MobilePhoneS2
 {
     public class MobilePhone
     {
-        public string MyNumber { get; set; } // read-write, only digits
+        public string MyNumber { get; set; }
         private List<Contact> myContacts;
 
         public MobilePhone(string myNumber)
@@ -17,18 +18,68 @@ namespace MobilePhoneS2
         public void AddNewContact(string name, string phoneNumber)
         {
             Contact c = new Contact(name, phoneNumber);
-            //myContacts.Add(c);
             AddNewContact(c);
         }
         public void AddNewContact(Contact c)
         {
-            if (FindContactIndex(c.Name) == -1) //not found
+            bool phoneNumberDigits(string phoneNumber)
             {
-                myContacts.Add(c);
+                foreach (char ch in phoneNumber)
+                {
+                    if (!char.IsDigit(ch))
+                        return false;
+                }
+                return true;
             }
-            else
+            bool EmptyNameCheck(string cNa)
             {
-                Console.WriteLine("Contact exists, not added");
+                return string.IsNullOrEmpty(cNa);      
+            }
+            bool EmptyNumberCheck(string cNu)
+            {
+                return string.IsNullOrEmpty(cNu);
+            }
+            bool flag = true;
+            while (flag)
+            {
+                if (EmptyNameCheck(c.Name))
+                {
+                    Console.WriteLine("Contact name can not be empty, not added.");
+                    Console.Write("Type any key to back to menu: ");
+                    Console.ReadKey();
+                    break;
+
+                }
+                if (EmptyNumberCheck(c.PhoneNumber))
+                {
+                    Console.WriteLine("Contact number can not be empty, not added.");
+                    Console.Write("Type any key to back to menu: ");
+                    Console.ReadKey();
+                    break;
+                }
+                if (!phoneNumberDigits(c.PhoneNumber))
+                {
+                    Console.WriteLine("Number is not made only of digits, not added.");
+                    Console.Write("Type any key to back to menu: ");
+                    Console.ReadKey();
+                    break;
+                }
+                if (FindContactIndex(c.Name) != -1)
+                {
+                    Console.WriteLine("Contact already exist on contact list, not added.");
+                    Console.Write("Type any key to back to menu: ");
+                    Console.ReadKey();
+                    break;
+                }
+
+                
+                    myContacts.Add(c);
+                    Console.WriteLine("Contact sucesfully added to contact list");
+                    Console.Write("Type any key to back to menu: ");
+                    Console.ReadKey();
+                    break;
+                //dublowanie przy modify
+                
             }
 
         }
@@ -47,22 +98,16 @@ namespace MobilePhoneS2
             {
                 myContacts.RemoveAt(index);
                 Console.WriteLine("Sucesfully removed");
+                Console.Write("Type any key to back to menu: ");
+                Console.ReadKey();
             }
             else
             {
                 Console.WriteLine($"Contact named {deleteName} doesn't exist");
+                Console.Write("Type any key to back to menu: ");
+                Console.ReadKey();
             }
 
-
-            //int index = FindContactIndex(c.Name);
-            //if(index == -1)
-            //{
-            //    Console.WriteLine("Contact named doesn't exist in contact list");
-            //}
-            //else
-            //{
-            //    myContacts.RemoveAt(index);
-            //}
         }
         public void ModifyContactByName()
         {
@@ -87,8 +132,15 @@ namespace MobilePhoneS2
                 Contact x = new Contact(tempName, newNumber);
                 AddNewContact(x);
                 Console.WriteLine($"Sucesfully changed number on {tempName}");
+                Console.Write("Type any key to back to menu: ");
+                Console.ReadKey();
             }
-            else Console.WriteLine("Contact with this name not found");
+            else 
+            {
+                Console.WriteLine("Contact with this name not found");
+                Console.Write("Type any key to back to menu: ");
+                Console.ReadKey();
+            }
 
         }
         public void ModifyContactByNumber()
@@ -111,7 +163,11 @@ namespace MobilePhoneS2
             if (counter > 1)
             {
                 Console.Write("Type name of contact You want to change: ");
-                string oldName = Console.ReadLine();
+                //try { 
+                    string oldName = Console.ReadLine(); 
+                //catch (Exception){
+
+                //}
 
                 int tempIndex = FindContactIndex(oldName);
                 string oldNumber = myContacts[tempIndex].PhoneNumber;
@@ -121,6 +177,8 @@ namespace MobilePhoneS2
                 Contact y = new Contact(newName, oldNumber);
                 AddNewContact(y);
                 Console.WriteLine("Name sucessfully changed");
+                Console.Write("Type any key to back to menu: ");
+                Console.ReadKey();
 
             }
             else if (counter == 1)
@@ -132,35 +190,18 @@ namespace MobilePhoneS2
                 Contact k = new Contact(newName2, tempNumber);
                 AddNewContact(k);
                 Console.WriteLine("Name succesfully changed");
+                Console.Write("Type any key to back to menu: ");
+                Console.ReadKey();
             }
             else
             {
                 Console.WriteLine("none.");
+                Console.Write("Type any key to back to menu: ");
+                Console.ReadKey();
             }
-            ////Console.Write("Type number of contact: ");
-            ////string tempNumber = Console.ReadLine();
-            ////int tempResult = -1;
-            ////for (int i = 0; i < myContacts.Count; i++)
-            ////{
-            ////    if (myContacts[i].PhoneNumber == tempNumber)
-            ////    {
-            ////        tempResult = i;
-            ////        break;
-            ////    }
-            ////}
-            ////if (tempResult != -1)
-            ////{
-            ////    Console.WriteLine($"Contact found => name: {myContacts[tempResult].Name}, number: {myContacts[tempResult].PhoneNumber}");
-            ////    Console.Write("Type new name: ");
-            ////    string newName = Console.ReadLine();
-            ////    //myContacts[tempResult].PhoneNumber = newNumber;
-            ////    myContacts.RemoveAt(tempResult);
-            ////    Contact z = new Contact(newName, tempNumber);
-            ////    AddNewContact(z);
-            ////    Console.WriteLine($"Sucesfully changed name to: {newName}");
-            ////}
-            ////else Console.WriteLine("Contact with this name not found");
+
         }
+
         public void ShowContact()
         {
             Console.Write("Type phone number or name to find contact:");
@@ -183,15 +224,14 @@ namespace MobilePhoneS2
         }
         public void PrintContacts()
         {
-            //foreach (var contact in myContacts)
-            //{
-            //    Console.WriteLine(contact);
-            //}
-            //****           myContacts.Sort();
+
+            myContacts.Sort(delegate (Contact x, Contact y) { return x.Name.CompareTo(y.Name); });
             for (int i = 0; i < myContacts.Count; i++)
             {
-                Console.WriteLine($"{i} {myContacts[i]} ");
+                Console.WriteLine($"{i + 1}. {myContacts[i]} ");
             }
+            Console.Write("Type any key to back to menu: ");
+            Console.ReadKey();
         }
         private int FindContactIndex(string name)
         {

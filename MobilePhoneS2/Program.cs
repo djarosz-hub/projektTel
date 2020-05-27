@@ -6,23 +6,27 @@ namespace MobilePhoneS2
     {
         static void Main(string[] args)
         {
-            // Aplikacja symulująca zachowanie się telefonu - listy kontaktów
-            // Kontakt - nazwa i przypisany jej numer telefonu
-            // Numer telefonu - ciąg cyfr
-            // Lista kontaktów przechowywana w strukturze List<T>
-            // Funkcjonalność:
-            // * dodanie/usunięcie/modyfikacja/wypisanie kontaktu
-            // * wypisanie całej listy kontaktów
-            // * wyszukanie numeru telefonu dla konkretnego kontaktu
-            // * wyszukanie nazw kontaktów dla podanego numeru telefonu
-            // Założenie: lista kontaktów jest - poza wymienionymi operacjami - niewidoczna/niedostępna
-            // Aplikacja na konsoli sterowana prostym menu
-            Console.WriteLine("Hello World!");
+
+            Console.WriteLine("Welcome to MyPhoneApp!\n");
+
             MobilePhone myPhone = new MobilePhone("123456789");
             do
             {
                 PrintAction();
-                int action = int.Parse(Console.ReadLine());
+                int action;
+                while (true)
+                {
+                    try
+                    {
+                        action = int.Parse(Console.ReadLine());
+                        break;
+                    }
+                    catch (Exception)
+                    {
+                        Console.WriteLine("Type correct value");
+                    }
+
+                }
                 switch (action)
                 {
                     case 0:
@@ -30,25 +34,33 @@ namespace MobilePhoneS2
                         Environment.Exit(0);
                         break;
                     case 1:
-                        //print all contacts
                         myPhone.PrintContacts();
                         break;
                     case 2:
-                        //add new contact
                         myPhone.AddNewContact(ReadNewContact());
                         break;
                     case 3:
                         Console.WriteLine("Type contact name You want to delete:");
                         string deleteName = Console.ReadLine();
                         myPhone.RemoveContact(deleteName);
-                        //remove contact
                         break;
                     case 4:
-                        // modify contact by name or by number
                         Console.WriteLine("Available actions:");
                         Console.WriteLine("1 - change number assigned to contact");
                         Console.WriteLine("2 - change name assigned to number");
-                        int modifyAction = int.Parse(Console.ReadLine());
+                        int modifyAction;
+                        while (true)
+                        {
+                            try
+                            {
+                                modifyAction = int.Parse(Console.ReadLine());
+                                break;
+                            }
+                            catch (Exception)
+                            {
+                                Console.WriteLine("Type correct value from list");
+                            }
+                        }
                         switch (modifyAction)
                         {
                             case 1:
@@ -57,34 +69,38 @@ namespace MobilePhoneS2
                             case 2:
                                 myPhone.ModifyContactByNumber();
                                 break;
+                            default:
+                                Console.WriteLine("Wrong type, type any key to back to main menu.");
+                                Console.ReadKey();
+                                break;
                         }
                         break;
                     case 5:
                         myPhone.ShowContact();
-                        // show contact, type name or number
                         break;
-
-
-
-
-
-
+                    default:
+                        Console.WriteLine("Type correct number from action list.");
+                        Console.Write("Type any key to back to menu: ");
+                        Console.ReadKey();
+                        break;
                 }
+                Console.Clear();
             } while (true);
 
 
         }
+
         private static void PrintAction()
         {
-            Console.WriteLine("Available actions:");
+            Console.WriteLine("You are in main menu, available actions:");
             Console.WriteLine("0 - shut down");
             Console.WriteLine("1 - print all contacts");
             Console.WriteLine("2 - add new contact");
             Console.WriteLine("3 - remove contact");
             Console.WriteLine("4 - modify contact");
             Console.WriteLine("5 - find contact");
-
-            //..
+            //6 - call contact
+            //7 calls history
             Console.Write("Choose action: ");
 
         }
@@ -94,7 +110,9 @@ namespace MobilePhoneS2
             string name = Console.ReadLine();
             Console.Write("Enter new phone number: ");
             string phoneNumber = Console.ReadLine();
+
             return new Contact(name, phoneNumber);
+
         }
     }
 }
