@@ -78,6 +78,9 @@ namespace MobilePhoneS2
                     case 5:
                         myPhone.ShowContact();
                         break;
+                    case 6:
+                        myPhone.CallContact();
+                        break;
                     default:
                         Console.WriteLine("Type correct number from action list.");
                         Console.Write("Type any key to back to menu: ");
@@ -99,8 +102,10 @@ namespace MobilePhoneS2
             Console.WriteLine("3 - remove contact");
             Console.WriteLine("4 - modify contact");
             Console.WriteLine("5 - find contact");
+            Console.WriteLine("6 - make a call");
             //6 - call contact
             //7 calls history
+            //8 call last called contact
             Console.Write("Choose action: ");
 
         }
