@@ -11,6 +11,7 @@ namespace MobilePhoneS2
     {
         public string MyNumber { get; set; }
         private List<Contact> myContacts;
+        public Stack<string> History { get; set; }
 
         public MobilePhone(string myNumber)
         {
@@ -203,11 +204,31 @@ namespace MobilePhoneS2
             }
 
         }
+        public void ShowHistory()
+        {
+            if (History.Count == 0)
+            {
+                Console.Write("Call history is empty, type any key to back to main menu:");
+                Console.ReadKey();
+                Console.WriteLine();
+            }
+            else
+            {
+                foreach (var x in History)
+                {
+                    Console.WriteLine(x);
+                }
+                Console.Write("Type any key to back to menu: ");
+                Console.ReadKey();
+                Console.WriteLine();
+            }
+        }
         public void CallContact()
         {
             Console.Write("Type name or number You want to call:");
             string callLenght = "";
             string calledContact = "";
+            string callToPush;
             string NumberTempName = "";
             string typedContact = Console.ReadLine();
             string trimedContact = typedContact.Trim(' ');
@@ -291,6 +312,10 @@ namespace MobilePhoneS2
                     Console.WriteLine($"Finished call with {cC}. Call lenght: {elapsedTime}.");
                     return elapsedTime;
                 }
+                callToPush = $"{calledContact}, connected for: {callLenght}";
+                History.Push(callToPush);
+                
+                //history.NewCall(callToPush);
                 Console.WriteLine("Type any key to back to main menu.");
                 Console.ReadKey();
                 Console.WriteLine();
@@ -300,6 +325,11 @@ namespace MobilePhoneS2
             Console.WriteLine();
 
         }
+        //public void NewCall(string nC)
+        //{
+        //    history.Push(nC);
+        //}
+
         public void ShowContact()
         {
             Console.Write("Type phone number or name to find contact:");

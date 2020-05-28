@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace MobilePhoneS2
 {
@@ -10,6 +11,8 @@ namespace MobilePhoneS2
             Console.WriteLine("Welcome to MyPhoneApp!\n");
 
             MobilePhone myPhone = new MobilePhone("123456789");
+            //CallHistory history = new CallHistory();
+            myPhone.History = new Stack<string>();
             do
             {
                 PrintAction();
@@ -81,6 +84,14 @@ namespace MobilePhoneS2
                     case 6:
                         myPhone.CallContact();
                         break;
+                    case 7:
+                        myPhone.ShowHistory();
+                        break;
+                    case 8:
+                        // history.LastCall();
+                        Console.WriteLine( $"last called contact: {myPhone.History.Peek()} ");
+                        Console.ReadKey();
+                        break;
                     default:
                         Console.WriteLine("Type correct number from action list.");
                         Console.Write("Type any key to back to menu: ");
@@ -103,8 +114,7 @@ namespace MobilePhoneS2
             Console.WriteLine("4 - modify contact");
             Console.WriteLine("5 - find contact");
             Console.WriteLine("6 - make a call");
-            //6 - call contact
-            //7 calls history
+            Console.WriteLine("7 - show calls history");
             //8 call last called contact
             Console.Write("Choose action: ");
 
