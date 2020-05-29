@@ -63,23 +63,20 @@ namespace MobilePhoneS2
                 if (!phoneNumberDigits(c.PhoneNumber))
                 {
                     Console.WriteLine("Number is not made only of digits, not added.");
-                    Console.Write("Type any key to back to menu: ");
-                    Console.ReadKey();
+                    BTM();
                     break;
                 }
                 if (FindContactIndex(c.Name) != -1)
                 {
                     Console.WriteLine("Contact already exist on contact list, not added.");
-                    Console.Write("Type any key to back to menu: ");
-                    Console.ReadKey();
+                    BTM();
                     break;
                 }
 
 
                 myContacts.Add(c);
                 Console.WriteLine("Contact sucesfully added to contact list");
-                Console.Write("Type any key to back to menu: ");
-                Console.ReadKey();
+                BTM();
                 break;
                 //dublowanie przy modify
 
@@ -101,14 +98,12 @@ namespace MobilePhoneS2
             {
                 myContacts.RemoveAt(index);
                 Console.WriteLine("Sucesfully removed");
-                Console.Write("Type any key to back to menu: ");
-                Console.ReadKey();
+                BTM();
             }
             else
             {
                 Console.WriteLine($"Contact named {deleteName} doesn't exist");
-                Console.Write("Type any key to back to menu: ");
-                Console.ReadKey();
+                BTM();
             }
 
         }
@@ -218,9 +213,8 @@ namespace MobilePhoneS2
                 {
                     Console.WriteLine(x);
                 }
-                Console.Write("Type any key to back to menu: ");
-                Console.ReadKey();
-                Console.WriteLine();
+                BTM();
+             
             }
         }
         public void CallContact()
@@ -228,13 +222,13 @@ namespace MobilePhoneS2
             Console.Write("Type name or number You want to call:");
             string callLenght = "";
             string calledContact = "";
-            string callToPush;
-            string NumberTempName = "";
+            //string callToPush;
+            int flag = 0;
+            //string NumberTempName = "";
             string typedContact = Console.ReadLine();
             string trimedContact = typedContact.Trim(' ');
             if ((FindContactIndex(trimedContact) != -1) || (FindNumberIndex(trimedContact) != -1))
             {
-                Console.WriteLine("jest");
                 bool CheckIfNumeric(string val)
                 {
                     foreach (char ch in val)
@@ -261,105 +255,130 @@ namespace MobilePhoneS2
                         {
                             if (myContacts[i].PhoneNumber == trimedContact)
                             {
-                                Console.WriteLine($"\n{myContacts[i].Name} -> {myContacts[i].PhoneNumber}");
+                                Console.WriteLine($"{myContacts[i].Name} -> {myContacts[i].PhoneNumber}");
                             }
                         }
                         Console.Write("Type name You want to call: ");
                         string tempName = Console.ReadLine();
                         string trimmedTempName = tempName.Trim(' ');
-                        if ((FindContactIndex(trimmedTempName) != -1) && (myContacts[FindContactIndex(trimmedTempName)].Name == trimmedTempName))
+                        if ((FindContactIndex(trimmedTempName) != -1) && (myContacts[FindContactIndex(trimmedTempName)].PhoneNumber == trimedContact))
                         {
-                            callLenght = Timer(trimmedTempName);
-                            calledContact = trimmedTempName;
+                            callLenght += Timer(trimmedTempName);
+                            calledContact += trimmedTempName;
                         }
                         else
                         {
                             Console.WriteLine($"Your contact list doesn't contains contact named {trimmedTempName} assigned to number: {trimedContact}");
+                            flag = 1;
+                            BTM();
                         }
 
                     }
                     else
-                        NumberTempName = myContacts[FindNumberIndex(trimedContact)].Name;
+                    {
+                        string NumberTempName = myContacts[FindNumberIndex(trimedContact)].Name;
                         callLenght = Timer(NumberTempName);
-                        calledContact = trimedContact;
+                        calledContact = NumberTempName;
+                    }
                 }
                 else
                 {
                     callLenght = Timer(trimedContact);
                     calledContact = trimedContact;
                 }
-                string Timer(string cC)
-                {
-                    Stopwatch stopWatch = new Stopwatch();
-                    stopWatch.Start();
-                    while (!Console.KeyAvailable)
-                    {
-                        Console.Clear();
-                        Console.WriteLine($"Calling: {cC}");
-                        Console.WriteLine("Type any key to finish call.");
-                        TimeSpan x = stopWatch.Elapsed;
-                        string innerElapsedTime = String.Format("{0:00}:{1:00}:{2:00}",
-                        x.Hours, x.Minutes, x.Seconds);
-                        Console.WriteLine(innerElapsedTime);
-                        Thread.Sleep(1000);
-                    }
 
-                    stopWatch.Stop();
-                    TimeSpan ts = stopWatch.Elapsed;
-                    string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}",
-                        ts.Hours, ts.Minutes, ts.Seconds);
-                    Console.Clear();
-                    Console.WriteLine($"Finished call with {cC}. Call lenght: {elapsedTime}.");
-                    return elapsedTime;
+                if (flag == 0)
+                {
+                    StackPush(calledContact, callLenght);
                 }
-                callToPush = $"{calledContact}, connected for: {callLenght}";
-                History.Push(callToPush);
-                
-                //history.NewCall(callToPush);
-                Console.WriteLine("Type any key to back to main menu.");
+            }
+            else
+            {
+                Console.Write("Contact not found on Your contact list, type any key to back to main menu:");
                 Console.ReadKey();
                 Console.WriteLine();
             }
-            else Console.Write("Contact not found on Your contact list, type any key to back to main menu:");
-            Console.ReadKey();
-            Console.WriteLine();
 
         }
-        //public void NewCall(string nC)
-        //{
-        //    history.Push(nC);
-        //}
+        public void StackPush(string calledContact, string callLenght)
+        {
+            string callToPush;
+            DateTime moment = DateTime.Now;
+            //moment.ToString();
+            //Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy"));
+            callToPush = $"{calledContact}, connected on {moment.Day}/{moment.Month}/{moment.Year} at {moment.Hour}:{moment.Minute} for: {callLenght}";
+            //callToPush = String.Format("{0}, connected on {1}/{2:MM}/{3} at {4:HH}:{5} for {6}.",calledContact,moment.Day,moment.Month, moment.Year,moment.Hour,moment.Minute,callLenght);
+            History.Push(callToPush);
+            BTM();
+        }
+        public string Timer(string cC)
+        {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start();
+            while (!Console.KeyAvailable)
+            {
+                Console.Clear();
+                Console.WriteLine($"Calling: {cC}");
+                Console.WriteLine("Type any key to finish call.");
+                TimeSpan x = stopWatch.Elapsed;
+                string innerElapsedTime = String.Format("{0:00}:{1:00}:{2:00}",
+                x.Hours, x.Minutes, x.Seconds);
+                Console.WriteLine(innerElapsedTime);
+                Thread.Sleep(1000);
+            }
 
+            stopWatch.Stop();
+            TimeSpan ts = stopWatch.Elapsed;
+            string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}",
+                ts.Hours, ts.Minutes, ts.Seconds);
+            Console.Clear();
+            Console.WriteLine($"Finished call with {cC}. Call lenght: {elapsedTime}.");
+            Console.ReadKey();
+            return elapsedTime;
+        }
         public void ShowContact()
         {
             Console.Write("Type phone number or name to find contact:");
+
             string findContact = Console.ReadLine();
+            Console.Write("Contacts found: ");
             int result = -1;
             for (int i = 0; i < myContacts.Count; i++)
             {
                 if (myContacts[i].Name == findContact || myContacts[i].PhoneNumber == findContact)
                 {
-                    result = i;
-                    break;
+                    Console.Write($"\n{myContacts[i].Name} -> {myContacts[i].PhoneNumber}");
+                    result = 0;
                 }
             }
             if (result != -1)
             {
-                Console.WriteLine($"Contact found: {myContacts[result].Name} -> {myContacts[result].PhoneNumber}");
+                Console.Write("\nType any key to back to menu: ");
+                Console.ReadKey();
             }
-            else Console.WriteLine("Contact not found");
+            else
+            {
+                Console.WriteLine("none.");
+                BTM();
+            }
 
         }
         public void PrintContacts()
         {
-
-            myContacts.Sort(delegate (Contact x, Contact y) { return x.Name.CompareTo(y.Name); });
-            for (int i = 0; i < myContacts.Count; i++)
+            if (myContacts.Count == 0)
             {
-                Console.WriteLine($"{i + 1}. {myContacts[i]} ");
+                Console.WriteLine("You contact list is empty.");
+                BTM();
             }
-            Console.Write("Type any key to back to menu: ");
-            Console.ReadKey();
+            else
+            {
+                myContacts.Sort(delegate (Contact x, Contact y) { return x.Name.CompareTo(y.Name); });
+                for (int i = 0; i < myContacts.Count; i++)
+                {
+                    Console.WriteLine($"{i + 1}. {myContacts[i]} ");
+                }
+                BTM();
+            }
         }
         private int FindContactIndex(string name)
         {
@@ -386,6 +405,36 @@ namespace MobilePhoneS2
                 }
             }
             return result;
+        }
+        public void LastCall()
+        {
+            void ByNameCall(string bnc)
+            {
+                string cL = Timer(bnc);
+                StackPush(bnc, cL);
+            }
+            if (History.Count == 0)
+            {
+                Console.WriteLine("You didn't call anyone yet.");
+                BTM();
+            }
+            else
+            {
+                string Lastcalled = History.Peek();
+                Console.WriteLine($"Last called contact: {Lastcalled}");
+                string cutLC = Lastcalled.Substring(0, Lastcalled.IndexOf(','));
+                Console.WriteLine($"Do you want to call {cutLC} again? Type 1 to call again or any other key to back to menu");
+                int.TryParse(Console.ReadLine(), out int choice);
+                if (choice == 1)
+                {
+                    ByNameCall(cutLC);
+                }
+            }
+        }
+        public void BTM()
+        {
+            Console.Write("Type any key to back to menu: ");
+            Console.ReadKey();
         }
     }
 }

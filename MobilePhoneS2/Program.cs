@@ -33,7 +33,7 @@ namespace MobilePhoneS2
                 switch (action)
                 {
                     case 0:
-                        Console.WriteLine("Shutting down...");
+                        Console.WriteLine("See You!");
                         Environment.Exit(0);
                         break;
                     case 1:
@@ -88,9 +88,7 @@ namespace MobilePhoneS2
                         myPhone.ShowHistory();
                         break;
                     case 8:
-                        // history.LastCall();
-                        Console.WriteLine( $"last called contact: {myPhone.History.Peek()} ");
-                        Console.ReadKey();
+                        myPhone.LastCall();
                         break;
                     default:
                         Console.WriteLine("Type correct number from action list.");
@@ -115,7 +113,7 @@ namespace MobilePhoneS2
             Console.WriteLine("5 - find contact");
             Console.WriteLine("6 - make a call");
             Console.WriteLine("7 - show calls history");
-            //8 call last called contact
+            Console.WriteLine("8 - call last called contact");
             Console.Write("Choose action: ");
 
         }
