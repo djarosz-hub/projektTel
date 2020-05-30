@@ -78,7 +78,6 @@ namespace MobilePhoneS2
                 Console.WriteLine("Contact sucesfully added to contact list");
                 BTM();
                 break;
-                //dublowanie przy modify
 
             }
 
@@ -125,13 +124,9 @@ namespace MobilePhoneS2
                 Console.WriteLine($"Contact found => name: {myContacts[tempResult].Name}, actual number: {myContacts[tempResult].PhoneNumber}");
                 Console.Write("Type new number: ");
                 string newNumber = Console.ReadLine();
-                //myContacts[tempResult].PhoneNumber = newNumber;
                 myContacts.RemoveAt(tempResult);
                 Contact x = new Contact(tempName, newNumber);
                 AddNewContact(x);
-                Console.WriteLine($"Sucesfully changed number on {tempName}");
-                Console.Write("Type any key to back to menu: ");
-                Console.ReadKey();
             }
             else
             {
@@ -147,13 +142,13 @@ namespace MobilePhoneS2
             string tempNumber = Console.ReadLine();
             int counter = 0;
 
-            Console.Write("Contacts found: ");
+            Console.WriteLine("Contacts found: ");
             for (int i = 0; i < myContacts.Count; i++)
             {
                 if (myContacts[i].PhoneNumber == tempNumber)
                 {
                     counter++;
-                    Console.WriteLine($"\n{myContacts[i].Name} -> {myContacts[i].PhoneNumber}");
+                    Console.WriteLine($"{myContacts[i].Name} -> {myContacts[i].PhoneNumber}");
 
 
                 }
@@ -161,22 +156,27 @@ namespace MobilePhoneS2
             if (counter > 1)
             {
                 Console.Write("Type name of contact You want to change: ");
-                //try { 
                 string oldName = Console.ReadLine();
-                //catch (Exception){
-
-                //}
-
                 int tempIndex = FindContactIndex(oldName);
-                string oldNumber = myContacts[tempIndex].PhoneNumber;
-                myContacts.RemoveAt(tempIndex);
-                Console.Write("Type new name for this contact: ");
-                string newName = Console.ReadLine();
-                Contact y = new Contact(newName, oldNumber);
-                AddNewContact(y);
-                Console.WriteLine("Name sucessfully changed");
-                Console.Write("Type any key to back to menu: ");
-                Console.ReadKey();
+                if (tempIndex != -1)
+                {
+                    string oldNumber = myContacts[tempIndex].PhoneNumber;
+                    Console.Write("Type new name for this contact: ");
+                    string newName = Console.ReadLine();
+                    Contact y = new Contact(newName, oldNumber);
+                    int before = myContacts.Count;
+                    AddNewContact(y);
+                    int after = myContacts.Count;
+                    if(after > before)
+                    {
+                        myContacts.RemoveAt(tempIndex);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine($"No contact named: {oldName} assigned to number: {tempNumber}.");
+                    BTM();
+                }
 
             }
             else if (counter == 1)
@@ -187,7 +187,6 @@ namespace MobilePhoneS2
                 myContacts.RemoveAt(tempIndex);
                 Contact k = new Contact(newName2, tempNumber);
                 AddNewContact(k);
-                Console.WriteLine("Name succesfully changed");
                 Console.Write("Type any key to back to menu: ");
                 Console.ReadKey();
             }
@@ -222,9 +221,7 @@ namespace MobilePhoneS2
             Console.Write("Type name or number You want to call:");
             string callLenght = "";
             string calledContact = "";
-            //string callToPush;
             int flag = 0;
-            //string NumberTempName = "";
             string typedContact = Console.ReadLine();
             string trimedContact = typedContact.Trim(' ');
             if ((FindContactIndex(trimedContact) != -1) || (FindNumberIndex(trimedContact) != -1))
@@ -302,12 +299,8 @@ namespace MobilePhoneS2
         }
         public void StackPush(string calledContact, string callLenght)
         {
-            string callToPush;
             DateTime moment = DateTime.Now;
-            //moment.ToString();
-            //Console.WriteLine(DateTime.Now.ToString("dd/MM/yyyy"));
-            callToPush = $"{calledContact}, connected on {moment.Day}/{moment.Month}/{moment.Year} at {moment.Hour}:{moment.Minute} for: {callLenght}";
-            //callToPush = String.Format("{0}, connected on {1}/{2:MM}/{3} at {4:HH}:{5} for {6}.",calledContact,moment.Day,moment.Month, moment.Year,moment.Hour,moment.Minute,callLenght);
+            string callToPush = String.Format("{0}, connected on {1:00}/{2:00}/{3} at {4:00}:{5:00} for {6}.", calledContact, moment.Day, moment.Month, moment.Year, moment.Hour, moment.Minute, callLenght);
             History.Push(callToPush);
             BTM();
         }
