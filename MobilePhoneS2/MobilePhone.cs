@@ -10,13 +10,41 @@ namespace MobilePhoneS2
     public class MobilePhone
     {
         public string MyNumber { get; set; }
-        private List<Contact> myContacts;
+        private List<Contact> myContacts { get; set; }
         public Stack<string> History { get; set; }
 
         public MobilePhone(string myNumber)
         {
             MyNumber = myNumber;
             this.myContacts = new List<Contact>();
+        }
+        bool ContactExist(string newName2)
+        {
+            int checkname = -1;
+            foreach (var x in myContacts)
+            {
+                if (x.Name == newName2)
+                    checkname = 1;
+            }
+            if (checkname == 1)
+            {
+                Console.WriteLine("Contact with this name already exist on contact list. Not changed.");
+                return false;
+            }
+            return true;
+        }
+        bool EmptyCheck(string cN)
+        {
+            return string.IsNullOrEmpty(cN);
+        }
+        bool PhoneNumberDigits(string phoneNumber)
+        {
+            foreach (char ch in phoneNumber)
+            {
+                if (!char.IsDigit(ch))
+                    return false;
+            }
+            return true;
         }
         public void AddNewContact(string name, string phoneNumber)
         {
@@ -25,27 +53,10 @@ namespace MobilePhoneS2
         }
         public void AddNewContact(Contact c)
         {
-            bool phoneNumberDigits(string phoneNumber)
-            {
-                foreach (char ch in phoneNumber)
-                {
-                    if (!char.IsDigit(ch))
-                        return false;
-                }
-                return true;
-            }
-            bool EmptyNameCheck(string cNa)
-            {
-                return string.IsNullOrEmpty(cNa);
-            }
-            bool EmptyNumberCheck(string cNu)
-            {
-                return string.IsNullOrEmpty(cNu);
-            }
             bool flag = true;
             while (flag)
             {
-                if (EmptyNameCheck(c.Name))
+                if (EmptyCheck(c.Name))
                 {
                     Console.WriteLine("Contact name can not be empty, not added.");
                     Console.Write("Type any key to back to menu: ");
@@ -53,14 +64,14 @@ namespace MobilePhoneS2
                     break;
 
                 }
-                if (EmptyNumberCheck(c.PhoneNumber))
+                if (EmptyCheck(c.PhoneNumber))
                 {
                     Console.WriteLine("Contact number can not be empty, not added.");
                     Console.Write("Type any key to back to menu: ");
                     Console.ReadKey();
                     break;
                 }
-                if (!phoneNumberDigits(c.PhoneNumber))
+                if (!PhoneNumberDigits(c.PhoneNumber))
                 {
                     Console.WriteLine("Number is not made only of digits, not added.");
                     BTM();
@@ -72,13 +83,10 @@ namespace MobilePhoneS2
                     BTM();
                     break;
                 }
-
-
                 myContacts.Add(c);
                 Console.WriteLine("Contact sucesfully added to contact list");
                 BTM();
                 break;
-
             }
 
         }
@@ -124,9 +132,25 @@ namespace MobilePhoneS2
                 Console.WriteLine($"Contact found => name: {myContacts[tempResult].Name}, actual number: {myContacts[tempResult].PhoneNumber}");
                 Console.Write("Type new number: ");
                 string newNumber = Console.ReadLine();
-                myContacts.RemoveAt(tempResult);
-                Contact x = new Contact(tempName, newNumber);
-                AddNewContact(x);
+                bool flag = true;
+                if (!PhoneNumberDigits(newNumber))
+                {
+                    flag = false;
+                    Console.WriteLine("New number is not made only of digits. Not changed.");
+                    BTM();
+                }
+                if (EmptyCheck(newNumber))
+                {
+                    flag = false;
+                    Console.WriteLine("New number can't be empty. Not changed.");
+                    BTM();
+                }
+                if (flag)
+                {
+                    myContacts[tempResult].PhoneNumber = newNumber;
+                    Console.WriteLine($"Succesfully changed.");
+                    BTM();
+                }
             }
             else
             {
@@ -142,9 +166,11 @@ namespace MobilePhoneS2
             string tempNumber = Console.ReadLine();
             int counter = 0;
 
-            Console.WriteLine("Contacts found: ");
+            Console.Write("Contacts found: ");
             for (int i = 0; i < myContacts.Count; i++)
             {
+                if(i == 0)
+                    Console.WriteLine();
                 if (myContacts[i].PhoneNumber == tempNumber)
                 {
                     counter++;
@@ -163,14 +189,23 @@ namespace MobilePhoneS2
                     string oldNumber = myContacts[tempIndex].PhoneNumber;
                     Console.Write("Type new name for this contact: ");
                     string newName = Console.ReadLine();
-                    Contact y = new Contact(newName, oldNumber);
-                    int before = myContacts.Count;
-                    AddNewContact(y);
-                    int after = myContacts.Count;
-                    if(after > before)
+                    if (ContactExist(newName))
                     {
-                        myContacts.RemoveAt(tempIndex);
+                        myContacts[tempIndex].Name = newName;
+                        Console.WriteLine("Succesfully changed");
+                        BTM();
                     }
+                    else
+                        BTM();
+                    
+                    //Contact y = new Contact(newName, oldNumber);
+                    //int before = myContacts.Count;
+                    //AddNewContact(y);
+                    //int after = myContacts.Count;
+                    //if(after > before)
+                    //{
+                    //    myContacts.RemoveAt(tempIndex);
+                    //}
                 }
                 else
                 {
@@ -184,11 +219,31 @@ namespace MobilePhoneS2
                 int tempIndex = FindNumberIndex(tempNumber);
                 Console.Write($"Type new name for contact  {myContacts[tempIndex].Name} -> {myContacts[tempIndex].PhoneNumber}: ");
                 string newName2 = Console.ReadLine();
-                myContacts.RemoveAt(tempIndex);
-                Contact k = new Contact(newName2, tempNumber);
-                AddNewContact(k);
-                Console.Write("Type any key to back to menu: ");
-                Console.ReadKey();
+                if (ContactExist(newName2))
+                {
+                    myContacts[tempIndex].Name = newName2;
+                    Console.WriteLine("Succesfully changed.");
+                    BTM();
+                }
+                else
+                    BTM();
+                //int checkname = -1;
+                //foreach (var x in myContacts)
+                //{
+                //    if (x.Name == newName2)
+                //        checkname = 1;
+                //}
+                //if (checkname != -1)
+                //{
+                //    Console.WriteLine("Contact with this name already exist on contact list. Not changed.");
+                //    BTM();
+                //}
+                //else
+                //{
+                //    myContacts[tempIndex].Name = newName2;
+                //    Console.WriteLine("Succesfully changed.");
+                //    BTM();
+                //}
             }
             else
             {
@@ -213,7 +268,7 @@ namespace MobilePhoneS2
                     Console.WriteLine(x);
                 }
                 BTM();
-             
+
             }
         }
         public void CallContact()
