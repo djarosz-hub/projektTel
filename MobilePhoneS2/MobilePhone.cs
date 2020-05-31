@@ -197,15 +197,7 @@ namespace MobilePhoneS2
                     }
                     else
                         BTM();
-                    
-                    //Contact y = new Contact(newName, oldNumber);
-                    //int before = myContacts.Count;
-                    //AddNewContact(y);
-                    //int after = myContacts.Count;
-                    //if(after > before)
-                    //{
-                    //    myContacts.RemoveAt(tempIndex);
-                    //}
+
                 }
                 else
                 {
@@ -227,23 +219,6 @@ namespace MobilePhoneS2
                 }
                 else
                     BTM();
-                //int checkname = -1;
-                //foreach (var x in myContacts)
-                //{
-                //    if (x.Name == newName2)
-                //        checkname = 1;
-                //}
-                //if (checkname != -1)
-                //{
-                //    Console.WriteLine("Contact with this name already exist on contact list. Not changed.");
-                //    BTM();
-                //}
-                //else
-                //{
-                //    myContacts[tempIndex].Name = newName2;
-                //    Console.WriteLine("Succesfully changed.");
-                //    BTM();
-                //}
             }
             else
             {
