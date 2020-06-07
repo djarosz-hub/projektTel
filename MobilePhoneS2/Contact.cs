@@ -4,7 +4,7 @@ using System.Text;
 
 namespace MobilePhoneS2
 {
-    //immutable
+    //mutable
     public class Contact
     {
         public string Name { get; set; }

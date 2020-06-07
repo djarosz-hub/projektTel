@@ -338,6 +338,7 @@ namespace MobilePhoneS2
         {
             Stopwatch stopWatch = new Stopwatch();
             stopWatch.Start();
+            //shows contact lenght and clean console view each second
             while (!Console.KeyAvailable)
             {
                 Console.Clear();
@@ -393,6 +394,7 @@ namespace MobilePhoneS2
                 Console.WriteLine("You contact list is empty.");
                 BTM();
             }
+            //sorts contacts before printing out
             else
             {
                 myContacts.Sort(delegate (Contact x, Contact y) { return x.Name.CompareTo(y.Name); });
